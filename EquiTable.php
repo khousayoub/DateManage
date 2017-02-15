@@ -8,7 +8,10 @@ function equiTable($begDate,$endDate,$nbDate,$weekEnd) {
     // Convert the date format into timestamp to be able to calculate the interval between available dates
     $begDate = new dateTime(substr($begDate,-10));
     $endDate = new dateTime(substr($endDate,-10));
-
+    if ($weekEnd){
+      echo "in work !";
+    }
+    else {
     // Calculating the interval between available dates as timestamp
     $diff = ($endDate->getTimestamp() - $begDate->getTimestamp())/(3600*24);
 
@@ -30,8 +33,8 @@ function equiTable($begDate,$endDate,$nbDate,$weekEnd) {
     print_r($tab);
 
     echo $result."<br>";
-    echo ($endDate->getTimestamp() - $begDate->getTimestamp())/(3600*24);
-
+    echo "Number of days : ".($endDate->getTimestamp() - $begDate->getTimestamp())/(3600*24);
+  }
 }
-equiTable("Wednesday 2017-01-01","Thursday 2017-01-31", 3 , true);
+equiTable("Wednesday 2017-01-01","Thursday 2017-01-31", 3 , false);
 ?>
