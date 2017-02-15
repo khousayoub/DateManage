@@ -1,5 +1,5 @@
 <?php
-function equiTable($begDate,$endDate,$nbDate,$weekEnd) {
+function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
 
     // get the name of both start and end dates
     $begDay = substr($begDate,0,-11);
@@ -89,6 +89,6 @@ function equiTable($begDate,$endDate,$nbDate,$weekEnd) {
         }
   }
 }
-equiTable("2017-01-01","2017-01-20", 3 , true);
-equiTable("2017-01-01","2017-01-30", 3 , false);
+equiDate("2017-01-01","2017-01-20", 3 , true);
+equiDate("2017-01-01","2017-01-30", 3 , false);
 ?>
