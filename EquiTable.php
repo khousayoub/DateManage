@@ -12,29 +12,32 @@ function equiTable($begDate,$endDate,$nbDate,$weekEnd) {
       echo "in work !";
     }
     else {
-    // Calculating the interval between available dates as timestamp
-    $diff = ($endDate->getTimestamp() - $begDate->getTimestamp())/(3600*24);
+      // Calculating the interval between available dates as timestamp
+      $diff = (($endDate->getTimestamp() - $begDate->getTimestamp())+(3600*24))/(3600*24);
+      if ($diff > $nbDate) {
+      // initializing the first date to start date
+      $firstDate = $begDate->getTimestamp();
 
-    // initializing the first date to start date
-    $firstDate = $begDate->getTimestamp();
+      // Calculating the interval as number of dates
+      $intervalDate = floor($diff / $nbDate)*3600*24;
 
-    // Calculating the interval as number of dates
-    $intervalDate = floor($diff / $nbDate)*3600*24;
+      // save dates into an Array
+      for ($i = 0; $i < $nbDate ; $i++) {
+        $date1 = new dateTime();
+        $tab[$i] = $date1->setTimestamp($firstDate)->format("l Y-m-d");
+        $firstDate += $intervalDate;
+        unset($date1);
+      }
 
-    // save dates into an Array
-    for ($i = 0; $i < $nbDate ; $i++) {
-      $firstDate += $intervalDate;
-      $date1 = new dateTime();
-      $tab[$i] = $date1->setTimestamp($firstDate)->format("l Y-m-d");
-      unset($date1);
-    }
+      // show them
+      print_r($tab);
 
-    // show them
-    print_r($tab);
-
-    echo $result."<br>";
-    echo "Number of days : ".($endDate->getTimestamp() - $begDate->getTimestamp())/(3600*24);
+      echo $result."<br>";
+      echo "Number of days : ".$diff;
+      } else {
+      echo "do another stuff !";
+        }
   }
 }
-equiTable("Wednesday 2017-01-01","Thursday 2017-01-31", 3 , false);
+equiTable("Wednesday 2017-01-01","Thursday 2017-01-02", 10 , false);
 ?>
