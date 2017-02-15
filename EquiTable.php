@@ -15,7 +15,7 @@ function equiTable($begDate,$endDate,$nbDate,$weekEnd) {
     for ($i = 0; $i < $nbDate ; $i++) {
       $firstDate += $intervalDate;
       $date1 = new dateTime();
-      $tab[$i] = $date1->setTimestamp($firstDate)->format("Y-m-d l");
+      $tab[$i] = $date1->setTimestamp($firstDate)->format("l Y-m-d");
       unset($date1);
     }
     print_r($tab);
@@ -24,5 +24,5 @@ function equiTable($begDate,$endDate,$nbDate,$weekEnd) {
     echo ($endDate->getTimestamp() - $begDate->getTimestamp())/(3600*24);
 
 }
-equiTable("wednsday 2017-01-01","thursday 2017-01-31", 3 , true);
+equiTable("Wednesday 2017-01-01","Thursday 2017-01-31", 3 , true);
 ?>
