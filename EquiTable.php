@@ -1,4 +1,54 @@
 <?php
+function trace($obj, $txt = '', $open = true, $bgcolor = '') {
+
+
+
+    $debuginfo = debug_backtrace();
+    $dfile = basename($debuginfo[0]['file']);
+    $dline = basename($debuginfo[0]['line']);
+
+
+        $idt = 'trace_' . rand(999, 99999);
+        if ($open != true) {
+            $open = false;
+            if ($txt == '') {
+                $txt = 'OPEN TRACE';
+            }
+        }
+
+
+        echo '<pre';
+        if ($bgcolor != '') {
+            echo ' style="background-color:' . $bgcolor . '" ';
+        }
+        echo '>';
+
+        echo '	<strong onclick="$(\'#' . $idt . '\').toggle();" style="cursor:pointer;">----------------------- ' . $txt . ' | ' . $dfile . ' line ' . $dline;
+        if (is_array($obj)) {
+            echo ' (' . count($obj) . ' elements) ';
+        }
+        echo ' -----------------------</strong><br />';
+
+        echo '<div id="' . $idt . '" class="tracevars"';
+        if ($open == false) {
+            echo 'style="display:none"';
+        }
+        echo'>';
+
+        print_r(var_dump($obj));
+        if (is_object($obj)) {
+            $obk = get_object_vars($obj);
+            echo implode(',', array_keys($obk));
+            echo '<br />'. "'" . implode("','", array_keys($obk)) . "'";
+        }
+
+
+        echo '</div>';
+
+        echo '</pre>';
+
+}
+
 function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
 
     // get the name of both start and end dates
@@ -53,8 +103,10 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
       }else {
         echo "DO another stuff !";
       }
-      print_r($tab);
-      echo "Number of days : ".$diff."<br>";
+      echo '<pre>';
+     trace(print_r($tab),"liste des tâches par date", true, 'yellow');
+      echo '</pre>';
+      trace("Number of days : ".$diff."<br>","Nombre de dates", true, 'blue');
     }
     else { // when we have to return dates with weekends
 
@@ -79,16 +131,18 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
       }
 
       // show them
-      print_r($tab);
-      echo "Number of days : ".$diff."<br>";
+      echo '<pre>';
+     trace(print_r($tab),"liste des tâches par date", true, 'red');
+      echo '</pre>';
+      trace("Number of days : ".$diff."<br>","Nombre de date", true, 'purple');
     }
 
-     // when the numbers of days we must return is more than the numbers of available days
+     // when the numbers of days is more than the numbers of available days
       else {
       echo "do another stuff !";
         }
   }
 }
-equiDate("2017-01-01","2017-01-20", 3 , true);
-equiDate("2017-01-01","2017-01-30", 3 , false);
+equiDate("2017-01-02","2017-01-21", 3 , true);
+equiDate("2017-01-02","2017-01-15", 3 , false);
 ?>
