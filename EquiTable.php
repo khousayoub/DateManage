@@ -90,9 +90,9 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
          unset($date1);
 
         }
-        echo '<pre>';
+      /*  echo '<pre>';
        trace(print_r($tab),"liste des tâches par date", true, 'green');
-        echo '</pre>';
+        echo '</pre>';*/
       }
       // when the numbers of days is more than the numbers of available days weekend  OFF
       else {
@@ -133,9 +133,9 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
           $nbTaskPerDay = floor($nbDate/$diff);
 
           }
-          echo '<pre>';
+          /*echo '<pre>';
          trace(print_r($tab),"liste des tâches par date dans le cas ou diff < nbDate weekend OFF", true, 'green');
-          echo '</pre>';
+          echo '</pre>';*/
 
         }
 
@@ -164,9 +164,9 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
       }
 
       // show them
-      echo '<pre>';
+      /*echo '<pre>';
      trace(print_r($tab),"liste des tâches par date", true, 'green');
-      echo '</pre>';
+      echo '</pre>';*/
     }
 
      // when the numbers of days is more than the numbers of available days weekend ON
@@ -190,19 +190,20 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
           unset($date1);
           $nbTaskPerDay = floor($nbDate/$diff);
           }
-          echo '<pre>';
+      /*    echo '<pre>';
          trace(print_r($tab),"liste des tâches par date dans le cas ou diff < nbDate weekend ON", true, 'green');
-          echo '</pre>';
+          echo '</pre>';*/
         }
       }
+      return $tab;
   }
 // TEST SET
-equiDate("2017-01-02","2017-01-21", 3 , true); // weekend ON $diff > $nbDate
+
+/*equiDate("2017-01-02","2017-01-21", 3 , true); // weekend ON $diff > $nbDate
 equiDate("2017-01-02","2017-01-09", 20 , true); // weekend ON $diff < $nbDate big numbers
 equiDate("2017-01-02","2017-01-15", 3 , false); // weekend OFF $diff > $nbDate
 equiDate("2017-01-02","2017-01-05", 10 , false); // weekend OFF $diff < $nbDate cas of no weekend between begDate and endDate
 equiDate("2017-01-03","2017-01-06", 5 , false); // weekend OFF $diff < $nbDate cas of weekend between bgDate and endDate
 equiDate("2017-01-04","2017-01-07", 10 , false); // weekend OFF $diff < $nbDate cas of weekend in endDate
 equiDate("2017-01-07","2017-01-10", 10 , false); // weekend OFF $diff < $nbDate cas of weekend in begDate (Saturday)
-equiDate("2017-01-08","2017-01-12", 10 , false); // weekend OFF $diff < $nbDate cas of weekend in begDate (Sunday)
-?>
+equiDate("2017-01-08","2017-01-12", 10 , false); // weekend OFF $diff < $nbDate cas of weekend in begDate (Sunday)*/
