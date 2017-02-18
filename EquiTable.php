@@ -103,6 +103,15 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
        trace(print_r($tab),"liste des tâches par date", true, 'green');
         echo '</pre>';
       }else {
+        $diff = 0;
+        while ($stmBeg <= $stmEnd) {
+          $dateTmp = new dateTime();
+          if ( ($dateTmp->setTimestamp($stmBeg)->format("l") !== "Saturday") &&
+           ($dateTmp->setTimestamp($stmBeg)->format("l") !== "Sunday") )
+             $diff ++;
+          $stmBeg += 86400;
+          }
+
         $nbTaskPerDay = floor($nbDate/$diff) ;
         $rest = $nbDate%$diff;
         $intervalDate = $nbTaskPerDay*3600*24;
@@ -113,7 +122,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
           if ($date1->setTimestamp($recordDate)->format("l") === "Saturday" )
             $recordDate = $recordDate-86400;
 
-          elseif ($date1->setTimestamp($recordDate)->format("l") === "Sunday")
+          elseif ($date1->setTimestamp($recordDate)->format("l") === "Sunday" )
             $recordDate = $recordDate+86400;
 
           if ($rest !== 0) {$nbTaskPerDay++;$rest--;}
@@ -126,14 +135,15 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
           $recordDate += 86400;
           if ($date1->setTimestamp($recordDate)->format("l") === "Saturday" )
             $recordDate = $recordDate+86400;
-          
+
           unset($date1);
           $nbTaskPerDay = floor($nbDate/$diff);
 
           }
           echo '<pre>';
-         trace(print_r($tab),"liste des tâches par date dans le cas ou diff < nbDate", true, 'green');
+         trace(print_r($tab),"liste des tâches par date dans le cas ou diff < nbDate weekend OFF", true, 'green');
           echo '</pre>';
+
         }
 
     }
@@ -188,15 +198,15 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
           $nbTaskPerDay = floor($nbDate/$diff);
           }
           echo '<pre>';
-         trace(print_r($tab),"liste des tâches par date dans le cas ou diff < nbDate", true, 'green');
+         trace(print_r($tab),"liste des tâches par date dans le cas ou diff < nbDate weekend ON", true, 'green');
           echo '</pre>';
         }
         }
   }
 
-equiDate("2017-01-02","2017-01-21", 3 , true);
+/*equiDate("2017-01-02","2017-01-21", 3 , true);
 equiDate("2017-01-02","2017-01-15", 3 , false);
-equiDate("2017-01-02","2017-01-05", 10 , false);
-equiDate("2017-01-06","2017-01-09", 5 , false);
-equiDate("2017-01-01","2017-01-03", 5 , true);
+equiDate("2017-01-02","2017-01-05", 10 , false);*/
+equiDate("2017-01-03","2017-01-06", 5 , false);
+//equiDate("2017-01-01","2017-01-03", 5 , true);
 ?>
