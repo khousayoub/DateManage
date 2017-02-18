@@ -110,7 +110,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
 
         for ($i = 0; $i<$diff; $i++) {
           $date1 = new dateTime();
-          if ($date1->setTimestamp($recordDate)->format("l") === "Saturday")
+          if ($date1->setTimestamp($recordDate)->format("l") === "Saturday" )
             $recordDate = $recordDate-86400;
 
           elseif ($date1->setTimestamp($recordDate)->format("l") === "Sunday")
@@ -124,8 +124,12 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
             $k++;
             }
           $recordDate += 86400;
+          if ($date1->setTimestamp($recordDate)->format("l") === "Saturday" )
+            $recordDate = $recordDate+86400;
+          
           unset($date1);
           $nbTaskPerDay = floor($nbDate/$diff);
+
           }
           echo '<pre>';
          trace(print_r($tab),"liste des tâches par date dans le cas ou diff < nbDate", true, 'green');
@@ -193,5 +197,6 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
 equiDate("2017-01-02","2017-01-21", 3 , true);
 equiDate("2017-01-02","2017-01-15", 3 , false);
 equiDate("2017-01-02","2017-01-05", 10 , false);
-equiDate("2017-01-01","2017-01-03", 5 , false);
+equiDate("2017-01-06","2017-01-09", 5 , false);
+equiDate("2017-01-01","2017-01-03", 5 , true);
 ?>
