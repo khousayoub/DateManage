@@ -63,7 +63,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
     $stmBeg = $begDate->getTimestamp();
     $stmEnd = $endDate->getTimestamp();
 
-    if (!$weekEnd){ // when we have to return dates without weekends
+    if (!$weekEnd){ // when we have to return dates with weekends
       $diff = (($stmEnd - $stmBeg)+(3600*24))/(3600*24);
       // Calculating the number of dates between the start date and the end date without weekends
       /*$diff = 0;
@@ -77,11 +77,10 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
 
       // initialize stmbeg to the start date
       $stmBeg = $begDate->getTimestamp();
+      $recordDate = $stmBeg;
+      $intervalDate = floor($diff/$nbDate)*3600*24;
 
       if ($diff > $nbDate) {
-
-        $recordDate = $stmBeg;
-        $intervalDate = floor($diff/$nbDate)*3600*24;
 
         for ($i = 0; $i<$nbDate; $i++){
           $date1 = new DateTime();
@@ -100,27 +99,54 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
          unset($date1);
 
         }
+        echo '<pre>';
+       trace(print_r($tab),"liste des tâches par date", true, 'green');
+        echo '</pre>';
       }else {
-        echo "DO another stuff !";
-      }
-      echo '<pre>';
-     trace(print_r($tab),"liste des tâches par date", true, 'yellow');
-      echo '</pre>';
-      trace("Number of days : ".$diff."<br>","Nombre de dates", true, 'blue');
+        $nbTaskPerDay = floor($nbDate/$diff) ;
+        $rest = $nbDate%$diff;
+        $intervalDate = $nbTaskPerDay*3600*24;
+        $k=0;
+
+        for ($i = 0; $i<$diff; $i++) {
+          $date1 = new dateTime();
+          if ($date1->setTimestamp($recordDate)->format("l") === "Saturday")
+            $recordDate = $recordDate-86400;
+
+          elseif ($date1->setTimestamp($recordDate)->format("l") === "Sunday")
+            $recordDate = $recordDate+86400;
+
+          if ($rest !== 0) {$nbTaskPerDay++;$rest--;}
+          else $nbTaskPerDay = floor($nbDate / $diff);
+
+          for ($j = 1; $j<=$nbTaskPerDay; $j++){
+            $tab[$k] = $date1->setTimestamp($recordDate)->format("l Y-m-d");
+            $k++;
+            }
+          $recordDate += 86400;
+          unset($date1);
+          $nbTaskPerDay = floor($nbDate/$diff);
+          }
+          echo '<pre>';
+         trace(print_r($tab),"liste des tâches par date dans le cas ou diff < nbDate", true, 'green');
+          echo '</pre>';
+        }
+
     }
-    else { // when we have to return dates with weekends
+    else { // when we have to return dates without weekends
 
       // Calculating the number of dates between the start date and the end date (weekends include)
       $diff = (($stmEnd - $stmBeg)+(3600*24))/(3600*24);
-
-      // when the numbers of days we must return is less than the numbers of available days
-      if ($diff > $nbDate) {
 
       // initializing the record date to start date
       $recordDate = $stmBeg;
 
       // Calculating the interval as number of dates
       $intervalDate = floor($diff / $nbDate)*3600*24;
+
+      // when the numbers of days we must return is less than the numbers of available days
+      if ($diff > $nbDate) {
+
 
       // save dates into an Array
       for ($i = 0; $i < $nbDate ; $i++) {
@@ -132,17 +158,40 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
 
       // show them
       echo '<pre>';
-     trace(print_r($tab),"liste des tâches par date", true, 'red');
+     trace(print_r($tab),"liste des tâches par date", true, 'green');
       echo '</pre>';
-      trace("Number of days : ".$diff."<br>","Nombre de date", true, 'purple');
     }
 
      // when the numbers of days is more than the numbers of available days
       else {
-      echo "do another stuff !";
+        $nbTaskPerDay = floor($nbDate/$diff) ;
+        $rest = $nbDate%$diff;
+        $intervalDate = $nbTaskPerDay*3600*24;
+        $k=0;
+
+        for ($i = 0; $i<$diff; $i++) {
+          $date1 = new dateTime();
+
+          if ($rest !== 0) {$nbTaskPerDay++;$rest--;}
+          else $nbTaskPerDay = floor($nbDate / $diff);
+
+          for ($j = 1; $j<=$nbTaskPerDay; $j++){
+            $tab[$k] = $date1->setTimestamp($recordDate)->format("l Y-m-d");
+            $k++;
+            }
+          $recordDate += 86400;
+          unset($date1);
+          $nbTaskPerDay = floor($nbDate/$diff);
+          }
+          echo '<pre>';
+         trace(print_r($tab),"liste des tâches par date dans le cas ou diff < nbDate", true, 'green');
+          echo '</pre>';
+        }
         }
   }
-}
+
 equiDate("2017-01-02","2017-01-21", 3 , true);
 equiDate("2017-01-02","2017-01-15", 3 , false);
+equiDate("2017-01-02","2017-01-05", 10 , false);
+equiDate("2017-01-01","2017-01-03", 5 , false);
 ?>
