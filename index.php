@@ -46,12 +46,20 @@
             </div>
           </div>
         </div>
-        <div class="form-group row">
-          <div class="offset-sm-2 col-sm-10">
-            <button type="submit" class="btn btn-primary">Show dates</button>
+        <div class="form-group row ">
+          <div class="offset-sm-2 col-sm-12">
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Show dates</button>
           </div>
         </div>
       </form>
+      <div class="offset-sm-2 col-sm-12 well">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-info">Start Date : <strong><?php echo $_POST["begdate"] ?></strong> </li>
+          <li class="list-group-item list-group-item-info">End Date :<strong> <?php echo $_POST["enddate"] ?></strong></li>
+          <li class="list-group-item list-group-item-info">Number of tasks :<strong> <?php echo $_POST["nbtask"] ?></strong> </li>
+          <li class="list-group-item list-group-item-info">Week-end : <strong><?php  if($_POST["weekend"] === "false") echo "OFF";elseif($_POST["weekend"] === "true") echo "ON"; ?></strong></li>
+        </ul>
+      </div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -65,7 +73,7 @@
         $a = equiDate($_POST["begdate"],$_POST["enddate"], $_POST["nbtask"], $_POST["weekend"]);
         if ($_POST["begdate"] > $_POST["enddate"]) echo "<h3> Error : Verify your dates start date must be before end date !</h3>";
         else {
-          $color = "success";
+          $color = "info";
         for ($i=0; $i<count($a); $i++){
           ?>
           <tr class="<?php echo $color ?>">
@@ -74,8 +82,8 @@
             <td><?php echo "task : ".($i+1) ?></td>
           </tr>
         <?php
-          if ($color === "success") $color = "warning";
-          else $color = "success";
+          if ($color === "info") $color = "default";
+          else $color = "info";
           }
         }
           ?>
