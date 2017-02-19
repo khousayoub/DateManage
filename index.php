@@ -52,7 +52,7 @@
           </div>
         </div>
       </form>
-      <div class="offset-sm-2 col-sm-12 well">
+      <div class="offset-sm-2 col-sm-12">
         <ul class="list-group">
           <li class="list-group-item list-group-item-info">Start Date : <strong><?php echo $_POST["begdate"] ?></strong> </li>
           <li class="list-group-item list-group-item-info">End Date :<strong> <?php echo $_POST["enddate"] ?></strong></li>
