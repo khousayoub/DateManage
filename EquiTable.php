@@ -62,16 +62,23 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
     // get the timestamp of boot start and end dates into tmp variables
     $stmBeg = $begDate->getTimestamp();
     $stmEnd = $endDate->getTimestamp();
-
-    if (!$weekEnd){ // when we have to return dates with weekends
+    
+    if ($weekEnd === "false"){ // when we have to return dates without weekends
       $diff = (($stmEnd - $stmBeg)+(3600*24))/(3600*24);
-
+      /*$diff = 0;
+      while ($stmBeg <= $stmEnd) {
+        $dateTmp = new dateTime();
+        if ( ($dateTmp->setTimestamp($stmBeg)->format("l") !== "Saturday") &&
+         ($dateTmp->setTimestamp($stmBeg)->format("l") !== "Sunday") )
+           $diff ++;
+        $stmBeg += 86400;
+      }*/
       // initialize stmbeg to the start date
       $stmBeg = $begDate->getTimestamp();
       $recordDate = $stmBeg;
       $intervalDate = floor($diff/$nbDate)*3600*24;
 
-      if ($diff > $nbDate) {
+      if ($diff >= $nbDate) {
 
         for ($i = 0; $i<$nbDate; $i++){
           $date1 = new DateTime();
@@ -92,7 +99,8 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
         }
       /*  echo '<pre>';
        trace(print_r($tab),"liste des tâches par date", true, 'green');
-        echo '</pre>';*/
+        echo '</pre>';
+        */
       }
       // when the numbers of days is more than the numbers of available days weekend  OFF
       else {
@@ -140,7 +148,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
         }
 
     }
-    else { // when we have to return dates without weekends
+    else { // when we have to return dates with weekends
 
       // Calculating the number of dates between the start date and the end date (weekends include)
       $diff = (($stmEnd - $stmBeg)+(3600*24))/(3600*24);
@@ -198,7 +206,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
       return $tab;
   }
 // TEST SET
-
+//equiDate("2017-02-20","2017-03-05", 5, false);
 /*equiDate("2017-01-02","2017-01-21", 3 , true); // weekend ON $diff > $nbDate
 equiDate("2017-01-02","2017-01-09", 20 , true); // weekend ON $diff < $nbDate big numbers
 equiDate("2017-01-02","2017-01-15", 3 , false); // weekend OFF $diff > $nbDate
