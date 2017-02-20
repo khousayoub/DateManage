@@ -62,36 +62,36 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
     // get the timestamp of boot start and end dates into tmp variables
     $stmBeg = $begDate->getTimestamp();
     $stmEnd = $endDate->getTimestamp();
-    
+
     if ($weekEnd === "false"){ // when we have to return dates without weekends
+      // $diff content la difference entre la date de debut et la date de fin en timsetamp (3600*24)
       $diff = (($stmEnd - $stmBeg)+(3600*24))/(3600*24);
-      /*$diff = 0;
-      while ($stmBeg <= $stmEnd) {
-        $dateTmp = new dateTime();
-        if ( ($dateTmp->setTimestamp($stmBeg)->format("l") !== "Saturday") &&
-         ($dateTmp->setTimestamp($stmBeg)->format("l") !== "Sunday") )
-           $diff ++;
-        $stmBeg += 86400;
-      }*/
+
       // initialize stmbeg to the start date
       $stmBeg = $begDate->getTimestamp();
+
+      // $recordDate contient les dates retournés
       $recordDate = $stmBeg;
+
+      // $intervalDate contient l'interval entre une date retourné et sa succession
       $intervalDate = floor($diff/$nbDate)*3600*24;
 
+      // cas la difference entre les dates est plus grande que le nombre de dates à retourner
       if ($diff >= $nbDate) {
 
+        // boucle par rapport aux dates qu'on doit retourné
         for ($i = 0; $i<$nbDate; $i++){
           $date1 = new DateTime();
 
           if (($date1->setTimestamp($recordDate)->format("l") !== "Saturday") &&
            ($date1->setTimestamp($recordDate)->format("l") !== "Sunday") )
-            $tab[$i] = $date1->setTimestamp($recordDate)->format("l Y-m-d");
+            $tab[$i] = $date1->setTimestamp($recordDate)->format("Y-m-d");
 
           elseif ($date1->setTimestamp($recordDate)->format("l") === "Saturday")
-            $tab[$i] = $date1->setTimestamp($recordDate-86400)->format("l Y-m-d");
+            $tab[$i] = $date1->setTimestamp($recordDate-86400)->format("Y-m-d");
 
           elseif ($date1->setTimestamp($recordDate)->format("l") === "Sunday")
-            $tab[$i] = $date1->setTimestamp($recordDate+86400)->format("l Y-m-d");
+            $tab[$i] = $date1->setTimestamp($recordDate+86400)->format("Y-m-d");
 
          $recordDate += $intervalDate;
          unset($date1);
@@ -130,7 +130,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
           else $nbTaskPerDay = floor($nbDate / $diff);
 
           for ($j = 1; $j<=$nbTaskPerDay; $j++){
-            $tab[$k] = $date1->setTimestamp($recordDate)->format("l Y-m-d");
+            $tab[$k] = $date1->setTimestamp($recordDate)->format("Y-m-d");
             $k++;
             }
           $recordDate += 86400;
@@ -166,7 +166,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
       // save dates into an Array
       for ($i = 0; $i < $nbDate ; $i++) {
         $date1 = new dateTime();
-        $tab[$i] = $date1->setTimestamp($recordDate)->format("l Y-m-d");
+        $tab[$i] = $date1->setTimestamp($recordDate)->format("Y-m-d");
         $recordDate += $intervalDate;
         unset($date1);
       }
@@ -191,7 +191,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
           else $nbTaskPerDay = floor($nbDate / $diff);
 
           for ($j = 1; $j<=$nbTaskPerDay; $j++){
-            $tab[$k] = $date1->setTimestamp($recordDate)->format("l Y-m-d");
+            $tab[$k] = $date1->setTimestamp($recordDate)->format("Y-m-d");
             $k++;
             }
           $recordDate += 86400;
@@ -206,7 +206,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
       return $tab;
   }
 // TEST SET
-//equiDate("2017-02-20","2017-03-05", 5, false);
+//equiDate("2017-02-20","2017-03-05", 1, true);
 /*equiDate("2017-01-02","2017-01-21", 3 , true); // weekend ON $diff > $nbDate
 equiDate("2017-01-02","2017-01-09", 20 , true); // weekend ON $diff < $nbDate big numbers
 equiDate("2017-01-02","2017-01-15", 3 , false); // weekend OFF $diff > $nbDate
