@@ -81,22 +81,25 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
 
         // boucle par rapport aux dates qu'on doit retourné
         for ($i = 0; $i<$nbDate; $i++){
+          // création de l'objet dateTime
           $date1 = new DateTime();
-
+          // si ce n'est pas un weekend on ajoute notre date
           if (($date1->setTimestamp($recordDate)->format("l") !== "Saturday") &&
            ($date1->setTimestamp($recordDate)->format("l") !== "Sunday") )
             $tab[$i] = $date1->setTimestamp($recordDate)->format("Y-m-d");
-
+            // si c'est un Samedi on met la tâche à Vendredi
           elseif ($date1->setTimestamp($recordDate)->format("l") === "Saturday")
             $tab[$i] = $date1->setTimestamp($recordDate-86400)->format("Y-m-d");
-
+            // si c'est un Dimanche on met la tâche à Lundi
           elseif ($date1->setTimestamp($recordDate)->format("l") === "Sunday")
             $tab[$i] = $date1->setTimestamp($recordDate+86400)->format("Y-m-d");
-
+            // on increment notre date par rapport à l'interval qu'on a calculé
          $recordDate += $intervalDate;
+         // libérer la variable
          unset($date1);
 
         }
+        // Affichage du tableau
       /*  echo '<pre>';
        trace(print_r($tab),"liste des tâches par date", true, 'green');
         echo '</pre>';
@@ -104,6 +107,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
       }
       // when the numbers of days is more than the numbers of available days weekend  OFF
       else {
+        // on calcul la difference entre les 2 dates sans prendre en compte les weekends
         $diff = 0;
         while ($stmBeg <= $stmEnd) {
           $dateTmp = new dateTime();
@@ -112,32 +116,45 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
              $diff ++;
           $stmBeg += 86400;
           }
-
+          // nbTaskPerDay calcul le nombre de tâches qui peuvent être répété dans une seul journée
         $nbTaskPerDay = floor($nbDate/$diff) ;
+        // dans le cas ou on a une reste sur la division entre la difference et le nombre de jour à retourner
         $rest = $nbDate%$diff;
+        // convertir l'interval en timestamp 3600*24
         $intervalDate = $nbTaskPerDay*3600*24;
+        // initialiser la variable qui permet de boucler les tâches sur une journée
         $k=0;
-
+        // boucler par rapport aux dates demandés
         for ($i = 0; $i<$diff; $i++) {
           $date1 = new dateTime();
+          // on verifie si la premiére date est un weekend
           if ($date1->setTimestamp($recordDate)->format("l") === "Saturday" )
+          // dans le cas ou c'est un samedi on pointe sur vendredi
             $recordDate = $recordDate-86400;
 
           elseif ($date1->setTimestamp($recordDate)->format("l") === "Sunday" )
+          // dans le cas ou c'estun dimanche on pointe sur un lundi
             $recordDate = $recordDate+86400;
-
+            // si on a une reste on increment les nommbres de tâche de la journée X par un et décremente le reste
           if ($rest !== 0) {$nbTaskPerDay++;$rest--;}
+          // si on a pas de reste on initialse notre variable par le nombre de tâches par journée
           else $nbTaskPerDay = floor($nbDate / $diff);
-
+          // une boucle pour ajouter les dates par rapport au nombre de tâches par journée
           for ($j = 1; $j<=$nbTaskPerDay; $j++){
             $tab[$k] = $date1->setTimestamp($recordDate)->format("Y-m-d");
+            // incrementation de l'indice k pour permettre d'avance sur notre tableau retourné
             $k++;
             }
+            // on a fini d'ajouter les tâches dans la journée X, on garde toujours la valeur de k
+            //pour qu'on puisse ajouter les autres tâches des autres journées dans la table $tab
+            // on avance d'une journée (puisqu'on est dans le cas ou toute les journées entre les dates fixés ont des tâches)
           $recordDate += 86400;
+          // si on tombe sur un samedi quand on incremente on reste sur la même journée et on reboucle sur elle
           if ($date1->setTimestamp($recordDate)->format("l") === "Saturday" )
-            $recordDate = $recordDate+86400;
+            $recordDate = $recordDate-86400;
 
           unset($date1);
+          // on reinitialise la variable nbTaskPerDay
           $nbTaskPerDay = floor($nbDate/$diff);
 
           }
@@ -183,7 +200,7 @@ function equiDate($begDate,$endDate,$nbDate,$weekEnd) {
         $rest = $nbDate%$diff;
         $intervalDate = $nbTaskPerDay*3600*24;
         $k=0;
-
+        // ici ça sera la même fonction que celle de weekend OFF sauf qu'on traite pas le cas des weekends
         for ($i = 0; $i<$diff; $i++) {
           $date1 = new dateTime();
 
